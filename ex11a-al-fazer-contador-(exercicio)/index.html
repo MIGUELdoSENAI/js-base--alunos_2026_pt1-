@@ -38,21 +38,56 @@
   </style>
 </head>
 <body>
-  <!-- Temporizador -->
+
   <div id="timer">0</div>
 
-  <!-- Botões de controle -->
   <button id="startButton">Iniciar</button>
   <button id="pauseButton">Pausar</button>
   <button id="resetButton">Resetar</button>
 
-  <!-- Script JavaScript embutido na página -->
   <script>
+    // pego o timer e os botoes pelo id
+    var timer = document.querySelector('#timer');
+    var startButton = document.querySelector('#startButton');
+    var pauseButton = document.querySelector('#pauseButton');
+    var resetButton = document.querySelector('#resetButton');
 
+    // variavel que guarda o numero de segundos
+    var segundos = 0;
 
-    // 1ª Digitação (Resolva aqui o exercício)
+    // variavel que guarda o intervalo
+    var intervalo = null;
 
+    // botao iniciar
+    startButton.addEventListener('click', function() {
+      // evita criar varios intervalos ao clicar varias vezes
+      if (intervalo != null) {
+        return;
+      }
 
+      // incrementa o contador a cada 1 segundo
+      intervalo = setInterval(function() {
+        segundos = segundos + 1;
+        timer.innerHTML = segundos;
+      }, 1000);
+    });
+
+    // botao pausar
+    pauseButton.addEventListener('click', function() {
+      // para o intervalo
+      clearInterval(intervalo);
+      intervalo = null;
+    });
+
+    // botao resetar
+    resetButton.addEventListener('click', function() {
+      // para o intervalo e zera o contador
+      clearInterval(intervalo);
+      intervalo = null;
+      segundos = 0;
+      timer.innerHTML = 0;
+    });
   </script>
+
 </body>
 </html>

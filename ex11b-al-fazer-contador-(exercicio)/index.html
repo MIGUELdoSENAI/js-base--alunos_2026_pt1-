@@ -39,16 +39,13 @@
   </style>
 </head>
 <body>
-  <!-- Parágrafo para exibir a citação -->
-  <p id="quote">Clique no botão para gerar uma citação.</p>
 
-  <!-- Botão para gerar uma nova citação -->
+  <p id="quote">Clique no botão para gerar uma citação.</p>
   <button id="newQuoteButton">Nova Citação</button>
 
-  <!-- Script JavaScript embutido na página -->
   <script>
-    // Array de citações
-    const quotes = [
+    // array de citacoes
+    var quotes = [
       "A vida é o que acontece enquanto você está ocupado fazendo outros planos. – John Lennon",
       "A simplicidade é o último grau de sofisticação. – Leonardo da Vinci",
       "O sucesso é a soma de pequenos esforços repetidos dia após dia. – Robert Collier",
@@ -56,9 +53,19 @@
       "Não importa o quão devagar você vá, desde que você não pare. – Confúcio"
     ];
 
-       // 1ª Digitação (Resolva aqui o exercício)
+    // pego o paragrafo e o botao pelo id
+    var quote = document.querySelector('#quote');
+    var newQuoteButton = document.querySelector('#newQuoteButton');
 
+    // quando clicar no botao
+    newQuoteButton.addEventListener('click', function() {
+      // gera um numero aleatorio entre 0 e o tamanho do array
+      var numero = Math.floor(Math.random() * quotes.length);
 
+      // exibe a citacao no paragrafo
+      quote.innerHTML = quotes[numero];
+    });
   </script>
+
 </body>
 </html>
