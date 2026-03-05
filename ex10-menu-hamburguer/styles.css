@@ -1,72 +1,97 @@
-/* styles.css */
-/* Reset básico para remover margens e paddings padrão */
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Define a fonte padrão para o corpo da página */
+/* Fonte padrão */
 body {
   font-family: Arial, sans-serif;
 }
 
-/* Estilo da barra de navegação */
+/* Barra de navegação */
 nav {
   display: flex;
-  justify-content: space-between; /* Alinha os itens à esquerda e à direita */
-  align-items: center; /* Centraliza verticalmente */
-  padding: 1rem 2rem; /* Espaçamento interno */
-  background-color: #333; /* Cor de fundo */
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #333;
 }
 
-/* Estilo do ícone do menu hambúrguer */
-/* .menu-icon {
+/* Ícone hambúrguer */
+.menu-icon {
+  display: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
 
-  2ª Digitação (Aqui) 
-
-} */
-
-/* Estilo da lista de navegação */
+/* Lista do menu */
 .nav-list {
-  display: flex; /* Exibe os itens em linha */
-  list-style: none; /* Remove os marcadores de lista */
-
-/* Move a lista para o lado direito */
-  /* margin-left: auto;  */
+  display: flex;
+  list-style: none;
+  margin-left: auto;
 }
 
-/* Estilo dos itens da lista */
+/* Itens */
 .nav-list li {
-  margin-left: 2rem; /* Espaçamento entre os itens */
+  margin-left: 2rem;
 }
 
-/* Estilo dos links */
+/* Links */
 .nav-list a {
-  color: white; /* Cor do texto */
-  text-decoration: none; /* Remove o sublinhado */
-  font-size: 1rem; /* Tamanho da fonte */
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+/* Criar uma animação */
+@keyframes abrirMenu {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Estilos para telas pequenas (max-width: 768px) */
-@media (max-width: 768px) {
-  /* .menu-icon {
+/* Animação de deslizar esquerda para direita*/
+@keyframes deslizarDireita {
+  from {transform: translateX(-100%);}
+  to {transform: translateX(0);}
+}
 
-    3ª Digitação (Aqui)
-    
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 768px) {
+
+  /* Mostra o hamburguer */
+  .menu-icon {
+    display: block;
   }
 
+  /* Esconde o menu */
   .nav-list {
-
-  } */
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    flex-direction: column;
+    transform: translateX(-100%);
+    display: flex;
+  }
 
   .nav-list li {
-    margin: 1rem 0; /* Espaçamento entre os itens */
-    text-align: center; /* Centraliza o texto */
+    margin: 1rem 0;
+    text-align: center;
   }
 
-  /* Classe ativada via JavaScript para exibir a lista */
-  .nav-list.active {
-    display: flex; /* Exibe a lista quando a classe "active" é adicionada */
+    /* Classe ativada pelo JS */
+    .nav-list.active {
+      display: flex;  /* Exibe o menu quando a classe "active" é adicionada */
+      animation: deslizarDireita 1.5s ease forwards; /* Animação de abertura do menu */
+    }
   }
-}

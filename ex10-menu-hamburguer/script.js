@@ -1,9 +1,22 @@
-// Seleciona o ícone do menu e a lista de navegação pelo ID
-const menuIcon = document.getElementById('menu-icon');
-const navList = document.getElementById('nav-list');
+// pego o icone e a lista pelo id
+var menuIcon = document.getElementById('menu-icon');
+var navList = document.getElementById('nav-list');
 
-// Adiciona um evento de clique ao ícone do menu
-menuIcon.addEventListener('click', () => {
-  // Alterna a classe "active" na lista de navegação
+// quando clicar no icone, abre ou fecha o menu
+menuIcon.addEventListener('click', function() {
   navList.classList.toggle('active');
+});
+
+// fecha o menu ao clicar em qualquer link
+var links = document.querySelectorAll('.nav-list a');
+
+for (var i = 0; i < links.length; i++) {
+  links[i].addEventListener('click', function() {
+    navList.classList.remove('active');
+  });
+}
+
+// fecha o menu ao rolar a pagina
+window.addEventListener('scroll', function() {
+  navList.classList.remove('active');
 });
