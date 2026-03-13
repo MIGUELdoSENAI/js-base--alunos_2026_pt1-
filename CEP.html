@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de CEP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f5eeee;
+      --card: #ffffff;
+      --text: #3a1a1a;
+      --text-muted: #7a5a5a;
+      --input-bg: #faf5f5;
+      --input-border: #D4848A;
+      --input-focus: #B03030;
+      --btn-primary: #7D1A1A;
+      --btn-primary-hover: #B03030;
+      --btn-secondary: #6A9BAA;
+      --btn-secondary-hover: #5a8a99;
+      --status-ok: #6A9BAA;
+      --status-erro: #B03030;
+      --border: #e8d8d8;
+      --header-bg: #7D1A1A;
+      --header-text: #f5eeee;
+      --input-readonly: #f9eef0;
+    }
+
+    [data-theme="dark"] {
+      --bg: #2a1010;
+      --card: #3a1a1a;
+      --text: #f0e4e4;
+      --text-muted: #D4848A;
+      --input-bg: #4a2020;
+      --input-border: #D4848A;
+      --input-focus: #D4848A;
+      --btn-primary: #B03030;
+      --btn-primary-hover: #D4848A;
+      --btn-secondary: #6A9BAA;
+      --btn-secondary-hover: #BDD0D8;
+      --status-ok: #BDD0D8;
+      --status-erro: #D4848A;
+      --border: #5a2a2a;
+      --header-bg: #4a1010;
+      --header-text: #f0e4e4;
+      --input-readonly: #452020;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .topo {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #B03030;
+    }
+
+    .topo h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .topo p {
+      font-size: 13px;
+      opacity: 0.75;
+      margin-top: 2px;
+    }
+
+    .btn-tema {
+      background: transparent;
+      border: 1.5px solid var(--header-text);
+      color: var(--header-text);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-tema:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .container {
+      max-width: 440px;
+      margin: 36px auto;
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 6px 24px rgba(125, 26, 26, 0.12);
+      padding: 28px 28px 32px;
+      transition: background 0.3s ease;
+    }
+
+    .titulo-secao {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--btn-primary);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 13px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      border-radius: 5px;
+      border: 1.5px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(176, 48, 48, 0.1);
+    }
+
+    input[readonly] {
+      background: var(--input-readonly);
+      color: var(--text-muted);
+    }
+
+    .btn-buscar {
+      width: 100%;
+      padding: 13px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background: var(--btn-primary);
+      color: white;
+      margin-bottom: 4px;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 3px 10px rgba(125, 26, 26, 0.25);
+    }
+
+    .btn-buscar:hover {
+      background: var(--btn-primary-hover);
+      box-shadow: 0 5px 16px rgba(125, 26, 26, 0.35);
+    }
+
+    #status {
+      font-size: 13px;
+      min-height: 20px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #status:empty {
+      padding: 0;
+      margin-bottom: 16px;
+    }
+
+    .status-ok {
+      background: rgba(106, 155, 170, 0.12);
+      color: var(--status-ok);
+      border: 1px solid rgba(106, 155, 170, 0.4);
+    }
+
+    .status-erro {
+      background: rgba(176, 48, 48, 0.08);
+      color: var(--status-erro);
+      border: 1px solid rgba(176, 48, 48, 0.3);
+    }
+
+    .row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .row .campo {
+      flex: 1;
+    }
+
+    .campo-uf {
+      max-width: 90px;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <div class="topo">
+    <div>
+      <h1>Consulta de CEP</h1>
+      <p>Preenche o endereço automaticamente</p>
+    </div>
+    <button class="btn-tema" id="btnTema">Modo Escuro</button>
+  </div>
+
+  <div class="container">
+    <p class="titulo-secao">Buscar pelo CEP</p>
+
+    <label for="cep">CEP</label>
+    <input type="text" id="cep" placeholder="Ex: 01001-000" maxlength="9">
+
+    <button class="btn-buscar" id="btnBuscar">Buscar</button>
+
+    <div id="status"></div>
+
+    <p class="titulo-secao">Endereço</p>
+
+    <label for="logradouro">Logradouro</label>
+    <input type="text" id="logradouro" readonly>
+
+    <label for="complemento">Complemento</label>
+    <input type="text" id="complemento" readonly>
+
+    <label for="bairro">Bairro</label>
+    <input type="text" id="bairro" readonly>
+
+    <div class="row">
+      <div class="campo">
+        <label for="localidade">Cidade</label>
+        <input type="text" id="localidade" readonly>
+      </div>
+      <div class="campo campo-uf">
+        <label for="uf">UF</label>
+        <input type="text" id="uf" readonly>
+      </div>
+    </div>
+
+    <label for="estado">Estado</label>
+    <input type="text" id="estado" readonly>
+
+    <label for="regiao">Regiao</label>
+    <input type="text" id="regiao" readonly>
+
+    <div class="row">
+      <div class="campo">
+        <label for="ibge">IBGE</label>
+        <input type="text" id="ibge" readonly>
+      </div>
+      <div class="campo">
+        <label for="gia">GIA</label>
+        <input type="text" id="gia" readonly>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="campo">
+        <label for="ddd">DDD</label>
+        <input type="text" id="ddd" readonly>
+      </div>
+      <div class="campo">
+        <label for="siafi">SIAFI</label>
+        <input type="text" id="siafi" readonly>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var campos = [
+      "logradouro", "complemento", "bairro", "localidade",
+      "uf", "estado", "regiao", "ibge", "gia", "ddd", "siafi"
+    ];
+
+    var cepInput = document.getElementById("cep");
+    var statusDiv = document.getElementById("status");
+    var botao = document.getElementById("btnBuscar");
+    var btnTema = document.getElementById("btnTema");
+
+    function limparCampos() {
+      for (var i = 0; i < campos.length; i++) {
+        var input = document.getElementById(campos[i]);
+        if (input) input.value = "";
+      }
+    }
+
+    async function buscarCep() {
+      limparCampos();
+      statusDiv.textContent = "";
+      statusDiv.className = "";
+
+      var cep = cepInput.value.replace(/\D/g, "");
+
+      if (cep.length !== 8) {
+        statusDiv.textContent = "Digite um CEP com 8 numeros.";
+        statusDiv.classList.add("status-erro");
+        return;
+      }
+
+      statusDiv.textContent = "Buscando...";
+      statusDiv.classList.add("status-ok");
+
+      try {
+        var resposta = await fetch("https://viacep.com.br/ws/" + cep + "/json/");
+        var dados = await resposta.json();
+
+        if (dados.erro) {
+          statusDiv.textContent = "CEP nao encontrado.";
+          statusDiv.className = "status-erro";
+          return;
+        }
+
+        for (var i = 0; i < campos.length; i++) {
+          var id = campos[i];
+          if (dados[id] !== undefined) {
+            document.getElementById(id).value = dados[id];
+          }
+        }
+
+        statusDiv.textContent = "Endereco carregado com sucesso.";
+        statusDiv.className = "status-ok";
+      } catch (erro) {
+        statusDiv.textContent = "Erro ao consultar o CEP.";
+        statusDiv.className = "status-erro";
+      }
+    }
+
+    botao.addEventListener("click", buscarCep);
+
+    cepInput.addEventListener("keyup", function(event) {
+      if (event.key === "Enter") buscarCep();
+    });
+
+    btnTema.addEventListener("click", function() {
+      var body = document.body;
+      var novoTema = body.getAttribute("data-theme") === "light" ? "dark" : "light";
+      body.setAttribute("data-theme", novoTema);
+      btnTema.textContent = novoTema === "light" ? "Modo Escuro" : "Modo Claro";
+    });
+  </script>
+</body>
+</html>
